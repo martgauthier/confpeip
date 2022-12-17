@@ -1,0 +1,42 @@
+import time
+from meteofrance_api import MeteoFranceClient
+from meteofrance_api import model
+import matplotlib.pyplot as plt
+
+class weather_data(MeteoFranceClient):
+    def __init__(self, dept):
+        self.client = MeteoFranceClient()
+        self.city = self.client.search_places(dept)[0]
+        self.cast = self.client.get_forecast_for_place(self.city)
+        self.raincast = self.client.get_rain(self.city.latitude, self.city.longitude)
+        self.pic = self.client.get_picture_of_the_day('france')
+
+    def next_rain_hour(self):
+        today_rain = self.client.get_rain(self.city.latitude, self.city.longitude)
+        dt = today_rain.next_rain_date_locale() # temps (en secondes) avant la prochaine pluie dans l'heure
+        return dt.timestamp() - time.time() if dt != None else None
+
+    def temperature(self):
+        temp = self.cast.today_forecast
+        return temp['T']
+
+    def rain_forecast(self):
+        rain_model = model.Rain(self.raincast.raw_data)
+        return [rain_model.forecast[i]['rain'] for i in range(len(rain_model.forecast))] #Prévisons par tranches de cinq minutes !!
+
+    def probability(self):
+        forecast_model = model.Forecast(self.cast.raw_data)
+        T = [0 if forecast_model.probability_forecast[i]['rain']['6h']==None else forecast_model.probability_forecast[i]['rain']['6h'] for i in range(len(forecast_model.probability_forecast))]
+        return T
+
+    def date(self):
+        forecast_model = model.Forecast(self.cast.raw_data)
+        return [forecast_model.timestamp_to_locale_time(forecast_model.probability_forecast[i]['dt']) for i in range(len(forecast_model.probability_forecast))]
+
+    def humidity(self):
+        forecast_model = model.Forecast(self.cast.raw_data)
+        return [forecast_model.forecast[i]['humidity'] for i in range(len(forecast_model.forecast))]
+
+nantes = weather_data('44000')
+plt.plot(range(len(nantes.probability())), nantes.probability())
+plt.show()
