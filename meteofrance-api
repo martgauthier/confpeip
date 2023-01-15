@@ -3,6 +3,21 @@ from meteofrance_api import MeteoFranceClient
 from meteofrance_api import model
 import matplotlib.pyplot as plt
 
+"""
+COMMENT MARCHE L'API METEOFRANCE :
+Il y a deux gros composants dans cet API : MeteoFranceClient et model, le premier permet de récuperer les données du site météofrance et le second de convertir ces
+données en un modèle intéressant à étudier pour nous.
+
+- La classe weather_data hérite de MeteoFranceClient (jsp pouquoi j'ai fait ça mais ça peut servir je pense)
+- next_rain_hour renvoie la durée (en seconde) de la prochaine pluie dans l'heure (s'il y en a une)
+- temperature renvoie la température du jour (mesurée par Météofrance
+- rain_forecast renvoie les prévisions de pluies par tranches de 5 minutes (1=pas de pluie, 5=forte averse)
+- probability renvoie les probabilités de pluie par tranche de 6h pour les 15 prochains jours
+=> Il est possible de récupérer la probabilité de pluie par tranche de 3h mais sur une plus courte durée (peut être + utile)
+- date sert à rien lahuiss
+- humidity renvoie l'humidité de l'air sur une periode de jsp
+"""
+
 class weather_data(MeteoFranceClient):
     def __init__(self, dept):
         self.client = MeteoFranceClient()
