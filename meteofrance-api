@@ -4,6 +4,7 @@ from meteofrance_api import model
 import matplotlib.pyplot as plt
 
 """
+TEST MERGE GAUTHIER
 COMMENT MARCHE L'API METEOFRANCE :
 Il y a deux gros composants dans cet API : MeteoFranceClient et model, le premier permet de récuperer les données du site météofrance et le second de convertir ces
 données en un modèle intéressant à étudier pour nous.
