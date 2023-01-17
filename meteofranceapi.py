@@ -53,6 +53,6 @@ class weather_data(MeteoFranceClient):
         forecast_model = model.Forecast(self.cast.raw_data)
         return [forecast_model.forecast[i]['humidity'] for i in range(len(forecast_model.forecast))]
 
-nantes = weather_data('44000')
-plt.plot(range(len(nantes.probability())), nantes.probability())
-plt.show()
+#nantes = weather_data('44000')
+#plt.plot(range(len(nantes.probability())), nantes.probability())
+#plt.show()

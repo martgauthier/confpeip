@@ -1,1 +1,3 @@
 confpeip.code-workspace
+__pycache__/
+tests.py

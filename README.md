@@ -1,6 +1,19 @@
 # confpeip
-Le github de code de gogo simon et benj
 
-## Règles/fonctionnement
-On a chacun notre branche perso, et y a une branche commune. Le but, c'est que chacun code sur sa branche perso (et fasse des commit régulièrement ! pour que les autres puissent mater quand ils veulent l'avancement de l'autre)
-et que si jamais un moment on décide de coder un truc ensemble, on le merge sur la branche main
+## Des détails sur les champs des fichiers JSON dans "daily_retrieved_data" sont contenus dans "analyse_des_json.md"
+
+## Choses propres au code de Gogo
+
+* j'utilise "meteofranceapi" en tant que librairie, pas en tant que fichier principal
+* le code "ALANCERTOUSLESJOURS", je le lance tous les jours pour récupérer des données (puisque c'est dûr de trouver des bases de données toutes prêtes) et je ferais des jolis tableaux et courbes dans une semaine
+
+# Comment lancer/Librairies à utiliser
+
+Les packages pip3 à installer sont (pour les gars qui voient pas ce que c'est envoyez moi un dm):
+* `sympy`
+* `matplotlib`
+* `meteofrance-api`
+
+pour les installer:
+
+`pip3 install nomdupaquet` *dans un terminal*
