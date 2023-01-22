@@ -1,4 +1,5 @@
 confpeip.code-workspace
 __pycache__/
 tests.py
-googlesheets/
+googlesheets/config/
+googlesheets/node_modules
