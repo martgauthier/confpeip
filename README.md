@@ -18,7 +18,7 @@ Il faut envoyer, à n'importe quel lien si le port est le bon, une requête POST
     * `commText`: commentaire textuel, en string. Mettre `"null"` **EN STRING** si tu veux laisser la case vide
     * `arrosage`: string, qui peut valoir (**ATTENTION À LA CASSE !**) `Oui` si Noah a dû arroser, `Non` sinon, et `Pas encore fait` si tu laisses la case vide
 * `avecEngrais`: idem mais pour la plante avec engrais
-* `date`: date au format "01/01/1970" en `string`, mettre "today" en `string` si tu veux mettre dans la ligne du jour
+* `date`: date au format "01/01/1970-15" en `string` pour le 1er janvier 1970 à 15h, mettre "now" en `string` si tu veux mettre dans la ligne du jour et de l'heure actuelle
 
 **Ne rien mettre de plus car je passe tout l'objet à une fonction conçue TRÈS PRÉCISEMENT pour ce formatage d'objet**
 

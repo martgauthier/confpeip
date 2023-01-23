@@ -18,7 +18,7 @@ api.init().then(() => {
             })
             req.on("end", () => {
                 let jsonData = jsonParser(postData)
-                if(jsonData.date === "today") {
+                if(jsonData.date === "now") {
                     api.addDataForDay(jsonData.sansEngrais, jsonData.avecEngrais).then((resultat) => {
                         res.writeHead(200)
                         res.end(resultat)

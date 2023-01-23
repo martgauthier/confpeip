@@ -32,9 +32,9 @@ module.exports = class SheetsAPI {
         this.avec.rows = await this.avec.sheet.getRows()
     }
 
-    async addDataForDay(dataSans, dataAvec, date=(new Date()).toLocaleDateString("fr-FR")) { //date au format 01/01/1970 pour le 1er janvier 1970
+    async addDataForDay(dataSans, dataAvec, date=((new Date()).toLocaleDateString("fr-FR") + "-" + (new Date()).getHours())) { //date au format 01/01/1970 pour le 1er janvier 1970
         let rowIndex = -1
-        for (let i = 1; i <=100; i++) {//100 pour prendre un grand nombre de jours
+        for (let i = 1; i <=2300; i++) {//100 pour prendre un grand nombre de jours
             if(this.sans.rows[i].Date === date) rowIndex=i;
             //console.log(this.sans.rows[i])
         }
@@ -57,8 +57,8 @@ module.exports = class SheetsAPI {
             avecRow["Température"]=dataAvec.temperature
             avecRow["humidité air"]=dataAvec.humiditeAir
             avecRow["humidité sol"]=dataAvec.humiditeSol
-            if(dataAvec.etatPlante !== -1)avecRow["note de l'état de la plante"]=dataAvec.etatPlante
-            if(dataAvec.commText !== "null")avecRow["Commentaire textuel (optionnel)"]=dataAvec.commText
+            if(dataAvec.etatPlante !== -1) avecRow["note de l'état de la plante"]=dataAvec.etatPlante
+            if(dataAvec.commText !== "null") avecRow["Commentaire textuel (optionnel)"]=dataAvec.commText
             if(dataAvec.arrosage !== "Pas encore fait") avecRow["A dû arroser"]=dataAvec.arrosage
 
             await sansRow.save()
