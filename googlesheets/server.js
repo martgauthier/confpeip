@@ -3,6 +3,12 @@ const api = new SheetsAPIClass()
 
 const http = require("http")
 
+function jsonParser(blob) {
+    let parsed = JSON.parse(blob);
+    if (typeof parsed === 'string') parsed = jsonParser(parsed);
+    return parsed;
+}
+
 api.init().then(() => {
     const server = http.createServer((req, res) => {
         if(req.method === "POST"){
@@ -11,7 +17,7 @@ api.init().then(() => {
                 postData+=chunk.toString()
             })
             req.on("end", () => {
-                let jsonData = JSON.parse(postData)
+                let jsonData = jsonParser(postData)
                 if(jsonData.date === "today") {
                     api.addDataForDay(jsonData.sansEngrais, jsonData.avecEngrais).then((resultat) => {
                         res.writeHead(200)
