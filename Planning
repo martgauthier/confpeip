@@ -1,0 +1,10 @@
+class planning(weather_data):
+    def __init__(self, P, visibilite):
+        self.probabiliy = P[0:visibilite]
+
+    def forecast_today(self, seuil):
+        today = self.probabiliy[0:3]
+        for i in range(len(today)):
+            if today[i] >= seuil:
+                return False
+        return True
