@@ -32,7 +32,7 @@ module.exports = class SheetsAPI {
         this.avec.rows = await this.avec.sheet.getRows()
     }
 
-    async addDataForDay(dataSans, dataAvec, date=((new Date()).toLocaleDateString("fr-FR") + "-" + (new Date()).getHours())) { //date au format 01/01/1970 pour le 1er janvier 1970
+    async addDataForDay(dataSans, dataAvec, date=((new Date()).toLocaleDateString("fr-FR") + "-" + (new Date()).getHours().toString().padStart(2, "0"))) { //date au format 01/01/1970 pour le 1er janvier 1970
         let rowIndex = -1
         for (let i = 1; i <=2300; i++) {//100 pour prendre un grand nombre de jours
             if(this.sans.rows[i].Date === date) rowIndex=i;
