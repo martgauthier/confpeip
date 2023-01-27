@@ -9,6 +9,17 @@ function jsonParser(blob) {
     return parsed;
 }
 
+function removeSlash(str) {// s/o chat gpt
+    if (str.startsWith("/")) {
+        str = str.slice(1);
+    }
+    if (str.endsWith("/")) {
+        str = str.slice(0, -1);
+    }
+    return str;
+}
+
+
 api.init().then(() => {
     const server = http.createServer((req, res) => {
         if(req.method === "POST"){
@@ -19,14 +30,16 @@ api.init().then(() => {
             req.on("end", () => {
                 let jsonData = jsonParser(postData)
                 if(jsonData.date === "now") {
-                    api.addDataForDay(jsonData.sansEngrais, jsonData.avecEngrais).then((resultat) => {
+                    api.addDataForDay(removeSlash(req.url), jsonData.dataPlante).then((resultat) => {
+                        console.log(removeSlash(req.url))
                         res.writeHead(200)
                         res.end(resultat)
                         console.log("dernière requête à " + (new Date()).toLocaleDateString("fr-FR") + ": " + resultat)
                     })
                 }
                 else {
-                    api.addDataForDay(jsonData.sansEngrais, jsonData.avecEngrais, jsonData.date).then((resultat) => {
+                    api.addDataForDay(removeSlash(req.url), jsonData.dataPlante, jsonData.date).then((resultat) => {
+                        console.log(removeSlash(req.url))
                         res.writeHead(200)
                         res.end(resultat)
                         console.log("dernière requête à " + (new Date()).toLocaleDateString("fr-FR") + ": " + resultat)

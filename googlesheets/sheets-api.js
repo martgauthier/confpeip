@@ -17,52 +17,50 @@ module.exports = class SheetsAPI {
 
         await this.doc.loadInfo()
         
-        this.sans = {
-            sheet: await this.doc.sheetsByIndex[0]
+        this.sheets=this.doc.sheetsByTitle
+
+        for(const sheetTitle in this.sheets) {
+            await this.sheets[sheetTitle].loadHeaderRow(HEADER_ROW)
+            this.sheets[sheetTitle].rows = await this.sheets[sheetTitle].getRows()
         }
-
-        this.avec = {
-            sheet: await this.doc.sheetsByIndex[1]
-        }
-
-        this.sans.sheet.loadHeaderRow(HEADER_ROW)
-        this.avec.sheet.loadHeaderRow(HEADER_ROW)
-
-        this.sans.rows = await this.sans.sheet.getRows()
-        this.avec.rows = await this.avec.sheet.getRows()
     }
 
-    async addDataForDay(dataSans, dataAvec, date=((new Date()).toLocaleDateString("fr-FR") + "-" + (new Date()).getHours().toString().padStart(2, "0"))) { //date au format 01/01/1970 pour le 1er janvier 1970
+    async addDataForDay(sheetName, dataPlante, date=((new Date()).toLocaleDateString("fr-FR") + "-" + (new Date()).getHours().toString().padStart(2, "0"))) { //date au format 01/01/1970 pour le 1er janvier 1970
+        if(!(Object.keys(this.sheets).includes(sheetName))){
+            await this.sheets["TEMPLATE"].duplicate({
+                title: sheetName
+            })
+
+            await this.doc.loadInfo()
+
+            this.sheets=this.doc.sheetsByTitle
+
+            for(const sheetTitle in this.sheets) {
+                await this.sheets[sheetTitle].loadHeaderRow(HEADER_ROW)
+                this.sheets[sheetTitle].rows = await this.sheets[sheetTitle].getRows()
+            }
+        }
+        
         let rowIndex = -1
-        for (let i = 1; i <=2200; i++) {//100 pour prendre un grand nombre de jours
-            if(this.sans.rows[i].Date === date) rowIndex=i;
+        for (let i = 1; i <=2100; i++) {//100 pour prendre un grand nombre de jours
+            if(this.sheets[sheetName].rows[i].Date === date) rowIndex=i;
             //console.log(this.sans.rows[i])
         }
         if(rowIndex === -1) {
             return "date introuvable"
         }
         else {
-            let sansRow = this.sans.rows[rowIndex]
-            let avecRow = this.avec.rows[rowIndex]
+            let row = this.sheets[sheetName].rows[rowIndex]
             
-            //données "sans engrais"
-            sansRow["Température"]=dataSans.temperature
-            sansRow["humidité air"]=dataSans.humiditeAir
-            sansRow["humidité sol"]=dataSans.humiditeSol
-            if(dataSans.etatPlante !== -1) sansRow["note de l'état de la plante"]=dataSans.etatPlante
-            if(dataSans.commText !== "null") sansRow["Commentaire textuel (optionnel)"]=dataSans.commText
-            if(dataSans.arrosage !== "Pas encore fait") sansRow["A dû arroser"]=dataSans.arrosage
+            //instanciation des données
+            row["Température"]=dataPlante.temperature
+            row["humidité air"]=dataPlante.humiditeAir
+            row["humidité sol"]=dataPlante.humiditeSol
+            if(dataPlante.etatPlante !== -1) row["note de l'état de la plante"]=dataPlante.etatPlante
+            if(dataPlante.commText !== "null") row["Commentaire textuel (optionnel)"]=dataPlante.commText
+            if(dataPlante.arrosage !== "Pas encore fait") row["A dû arroser"]=dataPlante.arrosage
 
-            //données "avec engrais"
-            avecRow["Température"]=dataAvec.temperature
-            avecRow["humidité air"]=dataAvec.humiditeAir
-            avecRow["humidité sol"]=dataAvec.humiditeSol
-            if(dataAvec.etatPlante !== -1) avecRow["note de l'état de la plante"]=dataAvec.etatPlante
-            if(dataAvec.commText !== "null") avecRow["Commentaire textuel (optionnel)"]=dataAvec.commText
-            if(dataAvec.arrosage !== "Pas encore fait") avecRow["A dû arroser"]=dataAvec.arrosage
-
-            await sansRow.save()
-            await avecRow.save()
+            await row.save()
             return "reussi"
         }
     }
