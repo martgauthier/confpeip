@@ -30,20 +30,30 @@ api.init().then(() => {
             req.on("end", () => {
                 let jsonData = jsonParser(postData)
                 if(jsonData.date === "now") {
-                    api.addDataForDay(removeSlash(req.url), jsonData.dataPlante).then((resultat) => {
-                        console.log(removeSlash(req.url))
-                        res.writeHead(200)
-                        res.end(resultat)
-                        console.log("dernière requête à " + (new Date()).toLocaleDateString("fr-FR") + ": " + resultat)
-                    })
+                    for (key of Object.keys(jsonData)) {
+                        console.log(key)
+                        console.log(jsonData[key])
+                        if(key !== "date") {
+                            api.addDataForDay(removeSlash(key), jsonData[key]).then((resultat) => {
+                                console.log(removeSlash(key))
+                                res.writeHead(200)
+                                res.end(resultat)
+                                console.log("dernière requête à " + (new Date()).toLocaleDateString("fr-FR") + ": " + resultat)
+                            })
+                        }
+                    }
                 }
                 else {
-                    api.addDataForDay(removeSlash(req.url), jsonData.dataPlante, jsonData.date).then((resultat) => {
-                        console.log(removeSlash(req.url))
-                        res.writeHead(200)
-                        res.end(resultat)
-                        console.log("dernière requête à " + (new Date()).toLocaleDateString("fr-FR") + ": " + resultat)
-                    })
+                    for (key in Object.keys(jsonData)) {
+                        if(key !== "date") {
+                            api.addDataForDay(removeSlash(key), jsonData[key], jsonData.date).then((resultat) => {
+                                console.log(removeSlash(key))
+                                res.writeHead(200)
+                                res.end(resultat)
+                                console.log("dernière requête à " + (new Date()).toLocaleDateString("fr-FR") + ": " + resultat)
+                            })
+                        }
+                    }
                 }
             })
         }
