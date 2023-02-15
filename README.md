@@ -1,6 +1,7 @@
-# confpeip
-Le github de code de gogo simon et benj
+# Branche "react"
+Branche vers laquelle Getget et Simon devront merge régulièrement leur code pour l'appli react
 
 ## Règles/fonctionnement
-On a chacun notre branche perso, et y a une branche commune. Le but, c'est que chacun code sur sa branche perso (et fasse des commit régulièrement ! pour que les autres puissent mater quand ils veulent l'avancement de l'autre)
-et que si jamais un moment on décide de coder un truc ensemble, on le merge sur la branche main
+Cette branche là, ça sera notre branche "officielle" de l'appli React, où on mergera le code en commun.
+
+Sinon, on a chacun notre branche de dev `react-gauthier` et `react-simon`
