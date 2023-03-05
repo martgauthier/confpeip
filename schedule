@@ -2,7 +2,7 @@
 Pour l'instant, la classe possède un seul module, bilan(), qui devrat être lancer tout les jours à heure fixe
 (a priori autour de 21h).
 
-ARGUMENTS :
+ARGUMENTS bilan() :
 - q est une fonction qui à une humidité h associe la quantité Q à arroser, pour h en deçà du seuil d'humidité safe pour
 la plante, qui est une constante à déterminer.
 - Hlim est l'humidité à partir de laquelle on commence à arroser, c'est le seuil à partir duquel l'état de la plante
@@ -10,12 +10,16 @@ devient problématique et demande un arrosage.
 - dateLimite est la durée maximale avant la prochaine pluie qui ne demandera pas d'arrosage manuel/
 - h est l'humidité de la plante au moment de la mesure
 
+ARGUMENTS createSchedule() :
+- j est le nombre de jours de notre calendrier de pluie
 '''
 
 import weather
+from random import *
+import matplotlib.pyplot as plt
 
 q = lambda x: 2*x - 0.5
-proba = lambda p: p*10
+proba = lambda p: p if p>70 else 0
 
 class waterManager:
 
@@ -30,3 +34,16 @@ class waterManager:
                 return q(h - self.wthr.bilan())
         return None
 
+class Tests(waterManager):
+
+    def __init__(self):
+        self.j = 0
+
+    def createSchedule(self, j, freq):
+        return [self.rain(freq) for i in range(j)]
+
+    def rain(self, freq):
+        print(round(20*(-0.5/freq)))
+        R = randint(round(20*(-0.5/freq)),20)
+        if R<0: R = 0
+        return R*10
