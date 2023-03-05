@@ -1,0 +1,32 @@
+'''
+Pour l'instant, la classe possède un seul module, bilan(), qui devrat être lancer tout les jours à heure fixe
+(a priori autour de 21h).
+
+ARGUMENTS :
+- q est une fonction qui à une humidité h associe la quantité Q à arroser, pour h en deçà du seuil d'humidité safe pour
+la plante, qui est une constante à déterminer.
+- Hlim est l'humidité à partir de laquelle on commence à arroser, c'est le seuil à partir duquel l'état de la plante
+devient problématique et demande un arrosage.
+- dateLimite est la durée maximale avant la prochaine pluie qui ne demandera pas d'arrosage manuel/
+- h est l'humidité de la plante au moment de la mesure
+
+'''
+
+import weather
+
+q = lambda x: 2*x - 0.5
+proba = lambda p: p*10
+
+class waterManager:
+
+    def __init__(self, f):
+        self.f = f
+        self.wthr = weather.weather_data('44000')
+        self.rainToday = False
+
+    def bilan(self, q, Hlim, dateLimite, h):
+        if h < Hlim:
+            if h < self.wthr.bilan(3, proba) or self.wthr.nxt_rain(70) > dateLimite*4:
+                return q(h - self.wthr.bilan())
+        return None
+
