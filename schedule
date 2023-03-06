@@ -14,7 +14,7 @@ ARGUMENTS createSchedule() :
 - j est le nombre de jours de notre calendrier de pluie
 '''
 
-import weather
+import meteofrance-api
 from random import *
 import matplotlib.pyplot as plt
 
@@ -25,7 +25,7 @@ class waterManager:
 
     def __init__(self, f):
         self.f = f
-        self.wthr = weather.weather_data('44000')
+        self.wthr = meteofrance-api.weather_data('44000')
         self.rainToday = False
 
     def bilan(self, q, Hlim, dateLimite, h):
