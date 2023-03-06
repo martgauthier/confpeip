@@ -52,6 +52,17 @@ class weather_data(MeteoFranceClient):
         forecast_model = model.Forecast(self.cast.raw_data)
         return [forecast_model.forecast[i]['humidity'] for i in range(len(forecast_model.forecast))]
 
-nantes = weather_data('44000')
-plt.plot(range(len(nantes.probability())), nantes.probability())
-plt.show()
+    def nxt_rain(self, seuil):
+        P = self.probability()
+        for i in range(len(P)):
+            if P[i] > seuil:
+                return i
+            return len(P)
+
+    def bilan(self, j, quantity):
+        P = self.probability()
+        print(P)
+        S = 0
+        for i in range(j*3):
+            S = S + quantity(P[i])
+        return S
