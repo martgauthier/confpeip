@@ -16,7 +16,7 @@ def decisionArrosage(hPrevu, seuilLimite, precipitations, proba, etp, volumePot,
         quantiteAArroserSansPluie=(fc-hPrevu)*volumePot + etp*surfacePot
         quantiteApporteeParPluie=precipitations*surfacePot
 
-        return quantiteAArroserParPluie - proba*quantiteApporteeParPluie #si proba=1, on économisera au max, si proba=0 on arrosera au max
+        return quantiteAArroserSansPluie - (0.2+0.8*proba)*quantiteApporteeParPluie #si proba=1, on économisera au max, si proba=0 on arrosera au max
     else:
         return 0
 
